@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .models import QueryTicket, Profile
-from .forms import ProfileForm, CustomUserCreationForm  # <-- Import our new form
+from .forms import ProfileForm, CustomUserCreationForm  # This import will now work
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
@@ -22,15 +22,13 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # Profile is created automatically by the signal in models.py
             login(request, user)
             return redirect('dashboard')
     else:
         # Use our new, custom form
         form = CustomUserCreationForm()
     
-    # We render 'register.html' which exists in this project
-    # This line is now correct and will find your template.
+    # This is the correct path to your template
     return render(request, 'register.html', {'form': form})
 
 def custom_logout_view(request):
@@ -77,6 +75,5 @@ def my_queries_view(request):
     
     return render(request, 'my_queries.html', {'queries': my_queries})
 
-# --- INSECURE FUNCTION REMOVED ---
-# The insecure create_admin_now function has been deleted.
-# Your admin user is created by the build script, which is the correct way.
+# --- ALL INSECURE ADMIN CODE IS GONE ---
+# Your admin user is created by the build script.
