@@ -1,34 +1,36 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import QueryTicket, Profile
-from .forms import ProfileForm
-from django.contrib.auth.models import User  # This was the import you added
-from django.http import HttpResponse         # This was the import you added
+from .forms import ProfileForm, CustomUserCreationForm  # <-- Import our new form
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 
 # --- Main Page Views ---
 
 def home_view(request):
-    # This is your Redtape-inspired homepage
     return render(request, 'home.html')
 
 def about_view(request):
-    # This is your "About Us" page
     return render(request, 'about.html')
 
 # --- Auth Views ---
 
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        # Use our new, custom form
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             # Profile is created automatically by the signal in models.py
             login(request, user)
             return redirect('dashboard')
     else:
-        form = UserCreationForm()
+        # Use our new, custom form
+        form = CustomUserCreationForm()
+    
+    # We render 'register.html' which exists in this project
+    # This line is now correct and will find your template.
     return render(request, 'register.html', {'form': form})
 
 def custom_logout_view(request):
@@ -39,20 +41,16 @@ def custom_logout_view(request):
 
 @login_required
 def dashboard_view(request):
-    # This is the NEW "My Dashboard" (Profile Page)
     profile = request.user.profile
     
     if request.method == 'POST':
-        # This handles UPDATING the profile
         form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('dashboard') # Redirect back to the same page
+            return redirect('dashboard')
     else:
-        # This shows the form with existing details
         form = ProfileForm(instance=profile)
 
-    # Get the query count
     query_count = QueryTicket.objects.filter(submitted_by=request.user).count()
 
     context = {
@@ -64,7 +62,6 @@ def dashboard_view(request):
 
 @login_required
 def my_queries_view(request):
-    # This is the OLD dashboard (Query List & Submission)
     if request.method == 'POST':
         subject = request.POST.get('subject')
         description = request.POST.get('description')
@@ -80,19 +77,6 @@ def my_queries_view(request):
     
     return render(request, 'my_queries.html', {'queries': my_queries})
 
-# --- Temporary Admin Creation View ---
-def create_admin_now(request):
-    try:
-        # --- !! CHANGE THESE VALUES !! ---
-        # Set your desired admin username and a VERY strong password
-        username = 'aavibhardwaj'
-        password = 'aavi123@'
-        email = 'aavi@example.com'
-        
-        if not User.objects.filter(username=username).exists():
-            User.objects.create_superuser(username, email, password)
-            return HttpResponse(f"<h1>Success!</h1><p>Admin user '{username}' was created.</p><p>You can now log in at /admin/.</p>")
-        else:
-            return HttpResponse(f"<h1>Done.</h1><p>Admin user '{username}' already exists.</p>")
-    except Exception as e:
-        return HttpResponse(f"<h1>An error occurred</h1><p>{e}</p>")
+# --- INSECURE FUNCTION REMOVED ---
+# The insecure create_admin_now function has been deleted.
+# Your admin user is created by the build script, which is the correct way.
