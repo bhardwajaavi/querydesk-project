@@ -5,6 +5,8 @@ QueryDesk is a full-stack web application built in Python and Django. It provide
 This system centralizes all audience messages, auto-tags them, allows admins to route and resolve issues, and provides a clean, modern interface for both users and administrators.
 
 Live Demo URL: https://querydesk-live.onrender.com/
+and for admin pannel as we want the admin pannel for managing the complaints and lot more the url is: https://querydesk-live.onrender.com/admin
+
 
 
 Key Features
