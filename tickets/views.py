@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import QueryTicket, Profile
 from .forms import ProfileForm
+from django.contrib.auth.models import User  # This was the import you added
+from django.http import HttpResponse         # This was the import you added
 
 # --- Main Page Views ---
 
@@ -77,3 +79,20 @@ def my_queries_view(request):
     my_queries = QueryTicket.objects.filter(submitted_by=request.user).order_by('-created_at')
     
     return render(request, 'my_queries.html', {'queries': my_queries})
+
+# --- Temporary Admin Creation View ---
+def create_admin_now(request):
+    try:
+        # --- !! CHANGE THESE VALUES !! ---
+        # Set your desired admin username and a VERY strong password
+        username = 'aavibhardwaj'
+        password = 'aavi123@'
+        email = 'aavi@example.com'
+        
+        if not User.objects.filter(username=username).exists():
+            User.objects.create_superuser(username, email, password)
+            return HttpResponse(f"<h1>Success!</h1><p>Admin user '{username}' was created.</p><p>You can now log in at /admin/.</p>")
+        else:
+            return HttpResponse(f"<h1>Done.</h1><p>Admin user '{username}' already exists.</p>")
+    except Exception as e:
+        return HttpResponse(f"<h1>An error occurred</h1><p>{e}</p>")
