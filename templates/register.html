@@ -28,24 +28,29 @@
           </div>
           {% endif %}
 
+          <!-- --- THIS IS THE CORRECTED SECTION --- -->
+          <!-- By using 'id_for_label', you guarantee the label matches the input's ID -->
+
           <div class="form__group">
-            <label for="id_username">Username</label>
+            <label for="{{ form.username.id_for_label }}">Username</label>
             {{ form.username }}
           </div>
 
           <div class="form__group">
-            <label for="id_email">Email</label>
+            <label for="{{ form.email.id_for_label }}">Email</label>
             {{ form.email }}
           </div>
+          
           <div class="form__group">
-            <label for="id_password1">Password</label>
+            <label for="{{ form.password.id_for_label }}">Password</label>
             {{ form.password }}
           </div>
           
           <div class="form__group">
-            <label for="id_password2">Confirm Password</label>
+            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
             {{ form.password2 }}
           </div>
+          <!-- --- END OF CORRECTION --- -->
 
           <button class="btn btn--main" type="submit">
             <svg
