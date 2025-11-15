@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container content-section">
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>You have submitted a total of <strong>{{ query_count }}</strong> queries.</p>
+
+    <div class="form-container" style="margin-top: 20px;">
+        <h3>Your Personal Details</h3>
+        <p>Keep your information up to date.</p>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-primary">Update Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

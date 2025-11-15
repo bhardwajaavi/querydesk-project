@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container content-section">
+    <h2>My Queries</h2>
+    <p>Submit a new query or track your existing ones.</p>
+
+    <div class="form-container">
+        <h3>Submit a New Query</h3>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <input type="text" name="subject" id="id_subject" required placeholder=" ">
+                <label for="id_subject">Subject</label>
+            </div>
+            
+            <div class="form-group">
+                <textarea name="description" id="id_description" rows="5" required placeholder=" "></textarea>
+                <label for="id_description">Describe your issue...</label>
+            </div>
+            
+            <button type="submit" class="btn-primary">Submit Query</button>
+        </form>
+    </div>
+
+    <div class="history-container">
+        <h3>Your Query History</h3>
+        {% for query in queries %}
+            <div class="query-card">
+                <h4>{{ query.subject }}</h4>
+                <p>Status: <span class="status-{{ query.status|lower }}">{{ query.status }}</span></p>
+                <p>Priority: <strong>{{ query.priority }}</strong></p>
+                <p>Category: <strong>{{ query.category }}</strong></p>
+                <p class="query-desc">{{ query.description }}</p>
+                <small>Submitted: {{ query.created_at }}</small>
+
+                {% if query.admin_resolution %}
+                <div class="admin-reply">
+                    <strong>Admin Resolution:</strong>
+                    <p>{{ query.admin_resolution|linebreaksbr }}</p>
+                </div>
+                {% endif %}
+
+            </div>
+        {% empty %}
+            <p>You have not submitted any queries yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

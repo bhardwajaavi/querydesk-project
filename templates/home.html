@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>Need Help? We're Here For You.</h1>
+        <p>Submit and track all your queries in one unified platform.</p>
+        <a href="{% url 'dashboard' %}" class="btn-primary">Get Started</a>
+    </div>
+</div>
+
+<div class="container content-section">
+    <h2>How It Works</h2>
+    <p>1. Register for an account. 2. Submit your query. 3. Track its status right from your dashboard.</p>
+</div>
+{% endblock %}

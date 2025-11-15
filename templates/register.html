@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container content-section form-container">
+    <h2>Register</h2>
+
+    <!-- This section shows errors -->
+    {% if form.errors %}
+        <div style="color: #A94442; background-color: #F2DEDE; border: 1px solid #EED3D7; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+            <strong>Please correct the errors below:</strong>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Register</button>
+    </form>
+</div>
+{% endblock %}
