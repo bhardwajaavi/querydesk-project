@@ -4,14 +4,60 @@
 {% block content %}
 <div class="hero-section">
     <div class="hero-content">
-        <h1>Need Help? We're Here For You.</h1>
-        <p>Submit and track all your queries in one unified platform.</p>
-        <a href="{% url 'dashboard' %}" class="btn-primary">Get Started</a>
+        <!-- These elements will now animate on page load -->
+        <h1 class="animate-in" id="hero-headline">Need Help? We're Here For You.</h1>
+        <p class="animate-in" id="hero-subheadline">Submit and track all your queries in one unified platform.</p>
+        <a href="{% url 'dashboard' %}" class="btn-primary animate-in" id="hero-button">Get Started</a>
     </div>
 </div>
 
-<div class="container content-section">
+<!-- THIS IS THE NEW INTERACTIVE "HOW IT WORKS" SECTION -->
+<div class="container content-section features-section">
     <h2>How It Works</h2>
-    <p>1. Register for an account. 2. Submit your query. 3. Track its status right from your dashboard.</p>
+    <p class="section-subtitle">A simple, 3-step process to get your issues resolved.</p>
+    
+    <div class="feature-grid">
+        <!-- Card 1: Will pop in as you scroll -->
+        <div class="feature-card hidden-on-load">
+            <h3>1. Submit Your Query</h3>
+            <p>Create an account and describe your issue in our 'My Queries' dashboard. Our system will automatically categorize it.</p>
+        </div>
+        
+        <!-- Card 2: Will pop in after Card 1 -->
+        <div class="feature-card hidden-on-load">
+            <h3>2. We Triage & Assign</h3>
+            <p>Our admin team reviews your query, sets a priority, and routes it to the correct department or agent to handle your case.</p>
+        </div>
+        
+        <!-- Card 3: Will pop in after Card 2 -->
+        <div class="feature-card hidden-on-load">
+            <h3>3. Get Your Resolution</h3>
+            <p>You can track the status in real-time. When it's resolved, you'll see the admin's reply right on your query card.</p>
+        </div>
+    </div>
 </div>
+
+<!-- This JavaScript handles the on-scroll animations -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Create an "observer"
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // When an element is 10% in view
+                if (entry.isIntersecting) {
+                    // Add the 'visible' class to trigger the animation
+                    entry.target.classList.add('visible');
+                    // Stop observing it so the animation doesn't re-run
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 }); // 10% threshold
+
+        // Find all elements you want to animate on scroll
+        const hiddenElements = document.querySelectorAll('.hidden-on-load');
+        
+        // Tell the observer to "watch" each of them
+        hiddenElements.forEach(el => observer.observe(el));
+    });
+</script>
 {% endblock %}

@@ -1,26 +1,42 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="container content-section form-container">
-    <h2>Register</h2>
+<div class="container content-section">
+    <div class="form-container">
+        <h2>Register</h2>
 
-    <!-- This section shows errors -->
-    {% if form.errors %}
-        <div style="color: #A94442; background-color: #F2DEDE; border: 1px solid #EED3D7; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
-            <strong>Please correct the errors below:</strong>
-            <ul>
+        {% if form.errors %}
+            <div class="form-errors">
+                <strong>Please correct the errors below:</strong>
+                <ul>
                 {% for field, errors in form.errors.items %}
                     {% for error in errors %}
-                        <li>{{ error }}</li>
+                        <li>{{ error|striptags }}</li>
                     {% endfor %}
                 {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn-primary">Register</button>
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <input type="text" name="username" id="id_username" required placeholder=" ">
+                <label for="id_username">Username</label>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password" id="id_password1" required placeholder=" ">
+                <label for="id_password1">Password</label>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password2" id="id_password2" required placeholder=" ">
+                <label for="id_password2">Confirm Password</label>
+            </div>
+
+            <button type="submit" class="btn-primary">Register</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

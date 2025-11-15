@@ -1,16 +1,48 @@
 {% extends 'layout.html' %}
-
+    
 {% block content %}
 <div class="container content-section">
-    <h2>Welcome, {{ user.username }}!</h2>
-    <p>You have submitted a total of <strong>{{ query_count }}</strong> queries.</p>
 
-    <div class="form-container" style="margin-top: 20px;">
-        <h3>Your Personal Details</h3>
-        <p>Keep your information up to date.</p>
+    <div class="form-container" style="max-width: 800px;">
+        <h3>Welcome, {{ user.username }}!</h3>
+        <p>You have submitted <strong>{{ query_count }}</strong> queries. Keep your details up to date below.</p>
+        
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            
+            <div class="form-group">
+                <input type="text" name="mobile_no" id="id_mobile_no" value="{{ form.mobile_no.value|default:'' }}" placeholder=" ">
+                <label for="id_mobile_no">Mobile No.</label>
+            </div>
+
+            <div class="form-group">
+                <!-- This is the Django form field -->
+                <select name="gender" id="id_gender">
+                    <option value="" {% if not form.gender.value %}selected{% endif %}>Prefer not to say</option>
+                    <option value="Male" {% if form.gender.value == "Male" %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if form.gender.value == "Female" %}selected{% endif %}>Female</option>
+                    <option value="Other" {% if form.gender.value == "Other" %}selected{% endif %}>Other</option>
+                </select>
+                <!-- This label will just sit on top, as selects are hard to animate -->
+                <label for="id_gender" class="select-label">Gender</label>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="address" id="id_address" value="{{ form.address.value|default:'' }}" placeholder=" ">
+                <label for="id_address">Address</label>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <input type="text" name="postal_code" id="id_postal_code" value="{{ form.postal_code.value|default:'' }}" placeholder=" ">
+                    <label for="id_postal_code">Postal Code</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="state" id="id_state" value="{{ form.state.value|default:'' }}" placeholder=" ">
+                    <label for="id_state">State</label>
+                </div>
+            </div>
+
             <button type="submit" class="btn-primary">Update Profile</button>
         </form>
     </div>
