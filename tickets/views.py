@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .models import QueryTicket, Profile
-from .forms import ProfileForm, CustomUserCreationForm  # This import will now work
+from .forms import ProfileForm, CustomUserCreationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
@@ -74,6 +74,3 @@ def my_queries_view(request):
     my_queries = QueryTicket.objects.filter(submitted_by=request.user).order_by('-created_at')
     
     return render(request, 'my_queries.html', {'queries': my_queries})
-
-# --- ALL INSECURE ADMIN CODE IS GONE ---
-# Your admin user is created by the build script.

@@ -3,15 +3,12 @@ from .models import Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-# --- NEW CUSTOM REGISTRATION FORM ---
-# This form now correctly inherits ALL fields from the base form
-# and just ADDS the email field.
+# --- NEW CUSTOM REGISTRATION FORM (The fix) ---
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
-    class Meta(UserCreationForm.Meta): # <-- THIS LINE IS THE FIX
+    class Meta(UserCreationForm.Meta):
         model = User
-        # This line now adds 'email' to all the existing fields
         fields = UserCreationForm.Meta.fields + ('email',) 
 
 # --- EXISTING PROFILE FORM ---
